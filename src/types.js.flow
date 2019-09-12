@@ -82,6 +82,7 @@ export type UseFieldConfig = {
   defaultValue?: any,
   format?: (value: any, name: string) => any,
   formatOnBlur?: boolean,
+  initialData?: Object,
   initialValue?: any,
   isEqual?: (a: any, b: any) => boolean,
   multiple?: boolean,

@@ -33,6 +33,7 @@ function useField<FormValues: FormValuesShape>(
     defaultValue,
     format = defaultFormat,
     formatOnBlur,
+    initialData,
     initialValue,
     isEqual,
     multiple,
@@ -64,6 +65,7 @@ function useField<FormValues: FormValuesShape>(
       beforeSubmit: () => beforeSubmitRef.current(),
       defaultValue,
       getValidator: validateRef.current && (() => validateRef.current),
+      data: initialData,
       initialValue,
       isEqual,
       validateFields
