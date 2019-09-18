@@ -1,6 +1,10 @@
 // @flow
 import * as React from 'react'
-import type { FormApi, FormState, FormValuesShape } from 'final-form'
+import type {
+  FormApi,
+  FormState,
+  FormValuesShape
+} from '@parsley-oss/final-form'
 import type {
   FieldProps,
   FieldRenderProps,

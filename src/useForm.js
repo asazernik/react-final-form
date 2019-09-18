@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import type { FormApi, FormValuesShape } from 'final-form'
+import type { FormApi, FormValuesShape } from '@parsley-oss/final-form'
 import ReactFinalFormContext from './context'
 
 function useForm<FormValues: FormValuesShape>(

@@ -1,7 +1,11 @@
 // @flow
 import * as React from 'react'
 import type { UseFormStateParams } from './types'
-import type { FormState, FormApi, FormValuesShape } from 'final-form'
+import type {
+  FormState,
+  FormApi,
+  FormValuesShape
+} from '@parsley-oss/final-form'
 import { all } from './ReactFinalForm'
 import useForm from './useForm'
 

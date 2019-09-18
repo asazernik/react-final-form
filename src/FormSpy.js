@@ -1,7 +1,7 @@
 // @flow
 import renderComponent from './renderComponent'
 import type { FormSpyPropsWithForm as Props, FormSpyRenderProps } from './types'
-import type { FormValuesShape } from 'final-form'
+import type { FormValuesShape } from '@parsley-oss/final-form'
 import isSyntheticEvent from './isSyntheticEvent'
 import useForm from './useForm'
 import useFormState from './useFormState'

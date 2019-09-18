@@ -9,7 +9,7 @@ import type {
   FormValuesShape,
   FieldSubscription,
   FieldValidator
-} from 'final-form'
+} from '@parsley-oss/final-form'
 
 type SupportedInputs = 'input' | 'select' | 'textarea'
 

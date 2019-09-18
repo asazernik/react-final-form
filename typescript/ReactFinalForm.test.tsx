@@ -1,5 +1,5 @@
 /* tslint:disable: no-shadowed-variable */
-import { Mutator } from 'final-form';
+import { Mutator } from '@parsley-oss/final-form';
 import * as React from 'react';
 import { Field, Form } from 'react-final-form';
 

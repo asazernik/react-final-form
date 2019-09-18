@@ -1,12 +1,12 @@
 // @flow
 import * as React from 'react'
-import { fieldSubscriptionItems } from 'final-form'
+import { fieldSubscriptionItems } from '@parsley-oss/final-form'
 import type {
   FieldSubscription,
   FieldState,
   FormApi,
   FormValuesShape
-} from 'final-form'
+} from '@parsley-oss/final-form'
 import type { UseFieldConfig, FieldInputProps, FieldRenderProps } from './types'
 import isReactNative from './isReactNative'
 import getValue from './getValue'

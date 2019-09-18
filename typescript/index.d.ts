@@ -8,7 +8,7 @@ import {
   FieldState,
   FieldSubscription,
   FieldValidator
-} from 'final-form';
+} from '@parsley-oss/final-form';
 import { Omit } from 'ts-essentials';
 
 type SupportedInputs = 'input' | 'select' | 'textarea';

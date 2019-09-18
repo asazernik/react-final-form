@@ -4,7 +4,7 @@ import {
   createForm,
   formSubscriptionItems,
   version as ffVersion
-} from 'final-form'
+} from '@parsley-oss/final-form'
 import type {
   FormApi,
   Config,
@@ -12,7 +12,7 @@ import type {
   FormState,
   FormValuesShape,
   Unsubscribe
-} from 'final-form'
+} from '@parsley-oss/final-form'
 import type { FormProps as Props } from './types'
 import renderComponent from './renderComponent'
 import useWhenValueChanges from './useWhenValueChanges'
