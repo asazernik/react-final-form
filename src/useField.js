@@ -47,7 +47,7 @@ function useField<FormValues: FormValuesShape>(
 ): FieldRenderProps {
   const form: FormApi<FormValues> = useForm<FormValues>('useField')
 
-  const validateRef = useLatest(validate)
+  const validateRef = useLatest(validate, [validate])
 
   const beforeSubmitRef = useLatest(() => {
     if (formatOnBlur) {
@@ -57,7 +57,7 @@ function useField<FormValues: FormValuesShape>(
       }
     }
     return beforeSubmit && beforeSubmit()
-  })
+  }, [formatOnBlur, format, beforeSubmit])
 
   const register = (callback: FieldState => void) =>
     form.registerField(name, callback, subscription, {
