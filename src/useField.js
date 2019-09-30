@@ -125,90 +125,91 @@ function useField<FormValues: FormValuesShape>(
     []
   )
 
-  const handlers = {
-    onBlur: React.useCallback(
-      (event: ?SyntheticFocusEvent<*>) => {
-        state.blur()
-        if (formatOnBlur) {
-          /**
-           * Here we must fetch the value directly from Final Form because we cannot
-           * trust that our `state` closure has the most recent value. This is a problem
-           * if-and-only-if the library consumer has called `onChange()` immediately
-           * before calling `onBlur()`, but before the field has had a chance to receive
-           * the value update from Final Form.
-           */
-          const fieldState = form.getFieldState(state.name)
-          // this ternary is primarily to appease the Flow gods
-          // istanbul ignore next
-          state.change(
-            format(fieldState ? fieldState.value : state.value, state.name)
-          )
-        }
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [state.name, state.value, format, formatOnBlur]
-    ),
-    onChange: React.useCallback(
-      (event: SyntheticInputEvent<*> | any) => {
+  const onBlur = React.useCallback(
+    (event: ?SyntheticFocusEvent<*>) => {
+      state.blur()
+      if (formatOnBlur) {
+        /**
+         * Here we must fetch the value directly from Final Form because we cannot
+         * trust that our `state` closure has the most recent value. This is a problem
+         * if-and-only-if the library consumer has called `onChange()` immediately
+         * before calling `onBlur()`, but before the field has had a chance to receive
+         * the value update from Final Form.
+         */
+        const fieldState = form.getFieldState(state.name)
+        // this ternary is primarily to appease the Flow gods
         // istanbul ignore next
-        if (process.env.NODE_ENV !== 'production' && event && event.target) {
-          const targetType = event.target.type
-          const unknown =
-            ~['checkbox', 'radio', 'select-multiple'].indexOf(targetType) &&
-            !type
+        state.change(
+          format(fieldState ? fieldState.value : state.value, state.name)
+        )
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.name, state.value, format, formatOnBlur]
+  )
 
-          const value: any =
-            targetType === 'select-multiple' ? state.value : _value
-
-          if (unknown) {
-            console.error(
-              `You must pass \`type="${
-                targetType === 'select-multiple' ? 'select' : targetType
-              }"\` prop to your Field(${name}) component.\n` +
-                `Without it we don't know how to unpack your \`value\` prop - ${
-                  Array.isArray(value) ? `[${value}]` : `"${value}"`
-                }.`
-            )
-          }
-        }
+  const onChange = React.useCallback(
+    (event: SyntheticInputEvent<*> | any) => {
+      // istanbul ignore next
+      if (process.env.NODE_ENV !== 'production' && event && event.target) {
+        const targetType = event.target.type
+        const unknown =
+          ~['checkbox', 'radio', 'select-multiple'].indexOf(targetType) &&
+          !type
 
         const value: any =
-          event && event.target
-            ? getValue(event, state.value, _value, isReactNative)
-            : event
-        state.change(parse(value, name))
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [_value, name, parse, state.change, state.value, type]
-    ),
-    onFocus: React.useCallback((event: ?SyntheticFocusEvent<*>) => {
-      state.focus()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-  }
+          targetType === 'select-multiple' ? state.value : _value
 
-  let { blur, change, focus, value, name: ignoreName, ...otherState } = state
+        if (unknown) {
+          console.error(
+            `You must pass \`type="${
+              targetType === 'select-multiple' ? 'select' : targetType
+            }"\` prop to your Field(${name}) component.\n` +
+            `Without it we don't know how to unpack your \`value\` prop - ${
+              Array.isArray(value) ? `[${value}]` : `"${value}"`
+            }.`
+          )
+        }
+      }
+
+      const value: any =
+        event && event.target
+          ? getValue(event, state.value, _value, isReactNative)
+          : event
+      state.change(parse(value, name))
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [_value, name, parse, state.change, state.value, type]
+  )
+
+  const onFocus = React.useCallback((event: ?SyntheticFocusEvent<*>) => {
+    state.focus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const meta = {
     // this is to appease the Flow gods
-    active: otherState.active,
-    data: otherState.data,
-    dirty: otherState.dirty,
-    dirtySinceLastSubmit: otherState.dirtySinceLastSubmit,
-    error: otherState.error,
-    initial: otherState.initial,
-    invalid: otherState.invalid,
-    length: otherState.length,
-    modified: otherState.modified,
-    pristine: otherState.pristine,
-    submitError: otherState.submitError,
-    submitFailed: otherState.submitFailed,
-    submitSucceeded: otherState.submitSucceeded,
-    submitting: otherState.submitting,
-    touched: otherState.touched,
-    valid: otherState.valid,
-    validating: otherState.validating,
-    visited: otherState.visited
+    active: state.active,
+    data: state.data,
+    dirty: state.dirty,
+    dirtySinceLastSubmit: state.dirtySinceLastSubmit,
+    error: state.error,
+    initial: state.initial,
+    invalid: state.invalid,
+    length: state.length,
+    modified: state.modified,
+    pristine: state.pristine,
+    submitError: state.submitError,
+    submitFailed: state.submitFailed,
+    submitSucceeded: state.submitSucceeded,
+    submitting: state.submitting,
+    touched: state.touched,
+    valid: state.valid,
+    validating: state.validating,
+    visited: state.visited
   }
+
+  let { value } = state
   if (formatOnBlur) {
     if (component === 'input') {
       value = defaultFormat(value, name)
@@ -219,7 +220,7 @@ function useField<FormValues: FormValuesShape>(
   if (value === null && !allowNull) {
     value = ''
   }
-  const input: FieldInputProps = { name, value, type, ...handlers }
+  const input: FieldInputProps = { name, value, type, onBlur, onChange, onFocus }
   if (type === 'checkbox') {
     if (_value === undefined) {
       input.checked = !!value
