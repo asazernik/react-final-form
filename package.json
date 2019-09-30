@@ -1,6 +1,6 @@
 {
   "name": "@parsley-oss/react-final-form",
-  "version": "6.3.0-6",
+  "version": "6.3.0-7",
   "description": "🏁 High performance subscription-based form state management for React",
   "main": "dist/react-final-form.cjs.js",
   "jsnext:main": "dist/react-final-form.es.js",
