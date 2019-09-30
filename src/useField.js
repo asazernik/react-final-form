@@ -187,27 +187,30 @@ function useField<FormValues: FormValuesShape>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const meta = {
-    // this is to appease the Flow gods
-    active: state.active,
-    data: state.data,
-    dirty: state.dirty,
-    dirtySinceLastSubmit: state.dirtySinceLastSubmit,
-    error: state.error,
-    initial: state.initial,
-    invalid: state.invalid,
-    length: state.length,
-    modified: state.modified,
-    pristine: state.pristine,
-    submitError: state.submitError,
-    submitFailed: state.submitFailed,
-    submitSucceeded: state.submitSucceeded,
-    submitting: state.submitting,
-    touched: state.touched,
-    valid: state.valid,
-    validating: state.validating,
-    visited: state.visited
-  }
+  const meta = React.useMemo(
+    () => ({
+      // this is to appease the Flow gods
+      active: state.active,
+      data: state.data,
+      dirty: state.dirty,
+      dirtySinceLastSubmit: state.dirtySinceLastSubmit,
+      error: state.error,
+      initial: state.initial,
+      invalid: state.invalid,
+      length: state.length,
+      modified: state.modified,
+      pristine: state.pristine,
+      submitError: state.submitError,
+      submitFailed: state.submitFailed,
+      submitSucceeded: state.submitSucceeded,
+      submitting: state.submitting,
+      touched: state.touched,
+      valid: state.valid,
+      validating: state.validating,
+      visited: state.visited
+    }),
+    [state]
+  )
 
   let { value } = state
   if (formatOnBlur) {
@@ -220,23 +223,44 @@ function useField<FormValues: FormValuesShape>(
   if (value === null && !allowNull) {
     value = ''
   }
-  const input: FieldInputProps = { name, value, type, onBlur, onChange, onFocus }
-  if (type === 'checkbox') {
-    if (_value === undefined) {
-      input.checked = !!value
-    } else {
-      input.checked = !!(Array.isArray(value) && ~value.indexOf(_value))
-      input.value = _value
-    }
-  } else if (type === 'radio') {
-    input.checked = value === _value
-    input.value = _value
-  } else if (component === 'select' && multiple) {
-    input.value = input.value || []
-    input.multiple = true
-  }
 
-  const renderProps: FieldRenderProps = { input, meta } // assign to force Flow check
+  const memoizedInput: FieldInputProps = React.useMemo<FieldInputProps>(() => {
+    const input: FieldInputProps = {
+      name,
+      value,
+      type,
+      onBlur,
+      onChange,
+      onFocus
+    }
+    if (type === 'checkbox') {
+      if (_value === undefined) {
+        input.checked = !!value
+      } else {
+        input.checked = !!(Array.isArray(value) && ~value.indexOf(_value))
+        input.value = _value
+      }
+    } else if (type === 'radio') {
+      input.checked = value === _value
+      input.value = _value
+    } else if (component === 'select' && multiple) {
+      input.value = input.value || []
+      input.multiple = true
+    }
+    return input
+  }, [
+    name,
+    value,
+    type,
+    onBlur,
+    onChange,
+    onFocus,
+    _value,
+    component,
+    multiple
+  ])
+
+  const renderProps: FieldRenderProps = { input: memoizedInput, meta } // assign to force Flow check
   return renderProps
 }
 
