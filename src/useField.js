@@ -116,15 +116,6 @@ function useField<FormValues: FormValuesShape>(
     ]
   )
 
-  React.useEffect(
-    () => {
-      // optimization purely for the unmounting case
-      return () => form.batchStart()
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-
   const onBlur = React.useCallback(
     (event: ?SyntheticFocusEvent<*>) => {
       state.blur()
